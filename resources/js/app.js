@@ -10,7 +10,9 @@ import Index from './Index'
 import auth from './auth'
 import router from './router'
 import movie_card from './components/movie-card';
+import latest_movies from './components/latest-movies';
 import VueElementLoading from 'vue-element-loading'
+
 
 // Set Vue globally
 window.Vue = Vue
@@ -24,10 +26,12 @@ Vue.use(VueAxios, axios)
 axios.defaults.baseURL = `http://localhost:9090/api/v1`
 Vue.use(VueAuth, auth)
 
-// Load Index
+// components
 Vue.component('index', Index)
+Vue.component('latest-movies', latest_movies);
 Vue.component('movie-card', movie_card);
 Vue.component('VueElementLoading', VueElementLoading);
+
 window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';
 const app = new Vue({
   el: '#app',

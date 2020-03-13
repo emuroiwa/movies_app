@@ -39,4 +39,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::resource('user', 'UserController')->only(['index','show']);
     });
+    
+    Route::middleware('auth:api')->get('/watchlater', function (Request $request) {
+        return $request->watchlater();
+    });
+    Route::apiResources(['watchlater' => 'API\WatchLaterController']);
 });

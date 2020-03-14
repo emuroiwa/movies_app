@@ -3117,19 +3117,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     movie: Object,
     myMovies: Object
   },
   data: function data() {
-    return {};
+    return {
+      isWatchLater: false
+    };
   },
   methods: {
-    watchLater: function watchLater(id) {
+    watchLater: function watchLater(id, operation) {
       // check if user is logged in
-      if (this.$auth.check()) {
-        this.saveWatchLater(id);
+      if (this.$auth.check() && operation == 'add') {
+        this.saveWatchLater(id, operation);
+      } else if (this.$auth.check() && operation == 'remove') {
+        this.saveWatchLater(id, operation);
       } else {
         // tell user to login
         this.$router.push({
@@ -3137,26 +3147,42 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    saveWatchLater: function saveWatchLater(id) {
-      axios.post('watchlater', {
-        movie_id: id,
-        user_id: this.$auth.user().id
-      }).then(function (response) {})["catch"](function (error) {
-        console.log("saveWatchLater had this error" + error);
-      });
-    },
-    checkWatchLaterList: function checkWatchLaterList(movieID) {
-      if (typeof this.myMovies !== 'undefined') {
-        //console.log('ss')
-        for (var i = 0; i < this.myMovies.length; i++) {
-          if (this.myMovies[i].id === movieID) {
-            return false;
-          } else {
-            return true;
-          }
-        }
+    saveWatchLater: function saveWatchLater(id, operation) {
+      var _this = this;
+
+      if (operation == 'add') {
+        axios.post('watchlater', {
+          movie_id: id,
+          user_id: this.$auth.user().id
+        }).then(function (response) {
+          _this.checkWatchLaterList(id);
+        })["catch"](function (error) {
+          console.log("saveWatchLater had this error" + error);
+        });
+      } else {
+        axios["delete"]('watchlater/' + id).then(function () {
+          _this.checkWatchLaterList(id);
+        })["catch"](function (error) {
+          console.log("saveWatchLater had this error" + error);
+        });
       }
+    },
+    checkWatchLaterList: function checkWatchLaterList(movie_id) {
+      var _this2 = this;
+
+      axios.get('watchlater/' + this.$auth.user().id + '/' + movie_id).then(function (data) {
+        if (data.data.length > 0) {
+          _this2.isWatchLater = true;
+        } else {
+          _this2.isWatchLater = false;
+        }
+      })["catch"](function (error) {
+        console.log("checkWatchLaterList had this error" + error);
+      });
     }
+  },
+  created: function created() {
+    this.checkWatchLaterList(this.movie.id);
   }
 });
 
@@ -3196,7 +3222,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('watchlater/' + this.$auth.user().id).then(function (data) {
         _this.setWatchLaterList(data);
       })["catch"](function (error) {
-        console.log("checkWatchLaterList had this error" + error);
+        console.log("getWatchLaterList had this error" + error);
       });
     },
     setWatchLaterList: function setWatchLaterList(data) {
@@ -40916,20 +40942,41 @@ var render = function() {
           _vm._v(_vm._s(_vm.movie.original_title))
         ]),
         _vm._v(" "),
-        _c("small", [_vm._v("Release Date " + _vm._s(_vm.movie.release_date))]),
+        _c("small", [
+          _vm._v("Release Date " + _vm._s(_vm.movie.release_date) + " ")
+        ]),
         _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            on: {
-              click: function($event) {
-                return _vm.watchLater(_vm.movie.id)
-              }
-            }
-          },
-          [_vm._v("Watch Later")]
-        )
+        !_vm.isWatchLater
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.watchLater(_vm.movie.id, "add")
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-plus" }),
+                _vm._v(" Watch Later\n        ")
+              ]
+            )
+          : _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                on: {
+                  click: function($event) {
+                    return _vm.saveWatchLater(_vm.movie.id, "remove")
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-check" }),
+                _vm._v(" Added Watch List\n        ")
+              ]
+            )
       ])
     ],
     1

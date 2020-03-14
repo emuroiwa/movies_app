@@ -24,7 +24,7 @@
                         this.setWatchLaterList(data)
                     })
                     .catch((error) => {
-                        console.log("checkWatchLaterList had this error" + error)
+                        console.log("getWatchLaterList had this error" + error)
                     })
             },
             setWatchLaterList(data) {

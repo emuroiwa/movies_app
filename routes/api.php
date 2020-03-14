@@ -40,8 +40,10 @@ Route::prefix('v1')->group(function () {
         Route::resource('user', 'UserController')->only(['index','show']);
     });
     
-    Route::middleware('auth:api')->get('/watchlater', function (Request $request) {
-        return $request->watchlater();
+    Route::middleware('auth:api')->group(function () {
+        Route::resource('watchlater', 'WatchLaterController')->only(['index','show','destory']);
     });
-    Route::apiResources(['watchlater' => 'API\WatchLaterController']);
+
+    Route::get('watchlater/{id}/{movieID}' , 'API\WatchLaterController@watchLater');
+    Route::delete('watchlater/{id}' , 'API\WatchLaterController@destroy');
 });

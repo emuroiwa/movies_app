@@ -3,7 +3,7 @@
         <vue-element-loading :active="isActive" :is-full-screen="true" :size="'80'" :color="'#FF6700'"/>
         <div class="flex-container">
             <div v-for="movie in movies.results" :key="movie.id">
-                <movie-card :movie="movie"></movie-card>
+                 <movie-card :movie="movie"></movie-card>
             </div>
         </div>
     </div>

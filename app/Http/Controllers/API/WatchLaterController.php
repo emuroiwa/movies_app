@@ -65,6 +65,14 @@ class WatchLaterController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $WatchLater = WatchLater::where('movie_id','=',$id);
+        $WatchLater->delete();
+    }
+    public function watchLater($id, $movie_id)
+    {
+        $WatchLater = WatchLater::where('user_id','=',$id)
+                    ->where('movie_id','=',$movie_id)
+                    ->get();
+        return $WatchLater;
     }
 }

@@ -8,8 +8,14 @@
         </router-link>
         <div class="card-body">
             <h5 class="card-title">{{ movie.original_title }}</h5>
-            <small>Release Date {{ movie.release_date }}</small>
-            <button  @click="watchLater(movie.id)" class="btn btn-primary">Watch Later</button>
+            <small>Release Date {{ movie.release_date }} </small>
+
+            <button v-if="!isWatchLater"  @click="watchLater(movie.id,'add')" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Watch Later
+            </button>
+            <button v-else  @click="saveWatchLater(movie.id,'remove')" class="btn btn-success">
+                <i class="fas fa-check"></i> Added Watch List
+            </button>
         </div>
     </div>
 </template>
@@ -22,45 +28,62 @@
         },
         data(){
             return {
+                isWatchLater: false,
             }
         },
         methods: {
-            watchLater(id) {
+            watchLater(id,operation) {
                 // check if user is logged in
-                if (this.$auth.check()) {
-                   this.saveWatchLater(id)  
+                if (this.$auth.check() && operation == 'add') {
+                   this.saveWatchLater(id,operation)  
+                } else if (this.$auth.check() && operation == 'remove') {
+                   this.saveWatchLater(id,operation)  
                 } else {
-                    // tell user to login
+                     // tell user to login
                     this.$router.push({ name: 'login' })
 
                 }
             },
-            saveWatchLater(id) {
-                axios.post('watchlater', {
-                        movie_id: id,
-                        user_id: this.$auth.user().id
-                       
-                    }).then((response) => {
-                       
+            
+            saveWatchLater(id,operation) {
+                if (operation == 'add') {
+                    axios.post('watchlater', {
+                            movie_id: id,
+                            user_id: this.$auth.user().id
                         
-                    }).catch((error)=>{
-                        console.log("saveWatchLater had this error" + error)
-                    });
+                        }).then((response) => {
+                            this.checkWatchLaterList(id);
+                            
+                        }).catch((error)=>{
+                            console.log("saveWatchLater had this error" + error)
+                        });
+                } else {
+                    axios.delete('watchlater/'+id).then(()=>{
+                            this.checkWatchLaterList(id);
+                        }).catch((error)=>{
+                            console.log("saveWatchLater had this error" + error)
+                        });
+                }
             },
             
-            checkWatchLaterList(movieID) {
-                if (typeof this.myMovies !== 'undefined') {
-                    //console.log('ss')
-                    for (var i=0; i < this.myMovies.length; i++) {
-                        if (this.myMovies[i].id === movieID) {
-                            return false;
+            checkWatchLaterList(movie_id) {
+                axios.get('watchlater/' + this.$auth.user().id + '/' + movie_id)
+                    .then((data) => {
+                        if (data.data.length > 0) {
+                            this.isWatchLater = true
                         } else {
-                            return true;
+                            this.isWatchLater = false
                         }
-                    }
-                }
+                    })
+                    .catch((error) => {
+                        console.log("checkWatchLaterList had this error" + error)
+                    })
+               
             }
 
+        },
+        created() {
+            this.checkWatchLaterList(this.movie.id);
         }
     }
 </script>

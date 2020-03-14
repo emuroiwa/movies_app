@@ -1,9 +1,11 @@
 <template>
     <div class="card mr-3 mb-2">
-        <img :src="'https://image.tmdb.org/t/p/w500/'+ movie.poster_path"  class="card-img-top" :alt="movie.original_title" >
+        <router-link :to="{ name: 'movieDetails', params: { id: movie.id } }">
+            <img :src="'https://image.tmdb.org/t/p/w500/'+ movie.poster_path"  class="card-img-top" :alt="movie.original_title" >
             <div class="card-img-overlay h-75">
                 <span class="badge badge-primary">{{ movie.vote_average }}</span>
             </div>
+        </router-link>
         <div class="card-body">
             <h5 class="card-title">{{ movie.original_title }}</h5>
             <small>Release Date {{ movie.release_date }}</small>
@@ -48,7 +50,7 @@
             
             checkWatchLaterList(movieID) {
                 if (typeof this.myMovies !== 'undefined') {
-                    console.log('ss')
+                    //console.log('ss')
                     for (var i=0; i < this.myMovies.length; i++) {
                         if (this.myMovies[i].id === movieID) {
                             return false;

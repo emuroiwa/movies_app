@@ -6,6 +6,8 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/user/Dashboard'
 import AdminDashboard from './pages/admin/Dashboard'
+import my_movies from './pages/MovieDetails';
+
 
 // Routes
 const routes = [
@@ -13,6 +15,15 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+    meta: {
+      auth: undefined
+    }
+  },
+  {
+    path: '/movie-details',
+    name: 'movieDetails',
+    props: true,
+    component: my_movies,
     meta: {
       auth: undefined
     }

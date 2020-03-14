@@ -1,10 +1,11 @@
 .flex-container {
     display: flex;
     flex-wrap: wrap;
+    align-content: stretch;
   }
   .flex-container > div > .card {
-      width: 18rem;
+      width: 14rem;
   }
   .search-textbox {
-    width: 18rem;
+    width: 80%;
   }

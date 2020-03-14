@@ -10,6 +10,7 @@ import Index from './Index'
 import auth from './auth'
 import router from './router'
 import movie_card from './components/movie-card';
+import my_movies from './components/my-movies';
 import latest_movies from './components/latest-movies';
 import VueElementLoading from 'vue-element-loading'
 
@@ -31,6 +32,7 @@ Vue.use(VueAuth, auth)
 Vue.component('index', Index)
 Vue.component('latest-movies', latest_movies);
 Vue.component('movie-card', movie_card);
+Vue.component('my-movies', my_movies);
 Vue.component('VueElementLoading', VueElementLoading);
 
 window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';

@@ -3,8 +3,7 @@
         <div class="card card-default">
             <div class="card-header">My Movies</div>
             <div class="card-body">
-                User Dashboard
-                
+                <my-movies></my-movies>
             </div>
         </div>
     </div>
@@ -16,8 +15,6 @@
         //
       }
     },
-    components: {
-      //
-    }
+
   }
 </script>

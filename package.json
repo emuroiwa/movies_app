@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.7"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.12.1",
         "@websanova/vue-auth": "^2.21.14-beta",
         "es6-promise": "^4.2.6",
         "vue-axios": "^2.1.4",

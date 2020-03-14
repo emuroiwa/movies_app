@@ -21,7 +21,7 @@
             getPopularMovies() {
                 this.isActive = true;
                 
-                  axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + apiKey)
+                  axios.get(baseURL + 'movie/popular?api_key=' + apiKey)
                         .then((data) => {
                             this.movies = data.data
                             this.isActive = false

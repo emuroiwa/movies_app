@@ -36,6 +36,7 @@ Vue.component('my-movies', my_movies);
 Vue.component('VueElementLoading', VueElementLoading);
 
 window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';
+window.baseURL = 'https://api.themoviedb.org/3/';
 const app = new Vue({
   el: '#app',
   router

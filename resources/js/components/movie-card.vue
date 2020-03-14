@@ -8,7 +8,7 @@
         </router-link>
         <div class="card-body">
             <h5 class="card-title">{{ movie.original_title }}</h5>
-            <small>Release Date {{ movie.release_date }} </small>
+            <small><i class="fas fa-calendar-times"></i> {{ movie.release_date }} </small>
 
             <button v-if="!isWatchLater"  @click="watchLater(movie.id,'add')" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Watch Later
@@ -24,7 +24,6 @@
     export default {
         props: {
             movie: Object,
-            myMovies: Object
         },
         data(){
             return {

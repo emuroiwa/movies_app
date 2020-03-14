@@ -3077,7 +3077,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isActive = true;
-      axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + apiKey).then(function (data) {
+      axios.get(baseURL + 'movie/popular?api_key=' + apiKey).then(function (data) {
         _this.movies = data.data;
         _this.isActive = false;
       })["catch"](function (error) {
@@ -3125,8 +3125,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    movie: Object,
-    myMovies: Object
+    movie: Object
   },
   data: function data() {
     return {
@@ -3228,25 +3227,24 @@ __webpack_require__.r(__webpack_exports__);
     setWatchLaterList: function setWatchLaterList(data) {
       var _this2 = this;
 
-      this.isActive = true; // let movies = [];
-
+      this.isActive = true;
+      var movies = [];
       var mainObject = [],
           promises = [];
       var that = this;
       data.data.forEach(function (item) {
-        var myUrl = 'https://api.themoviedb.org/3/movie/' + item.movie_id + '?api_key=' + apiKey;
-        promises.push(axios.get(myUrl));
+        if (item.movie_id) {
+          var myUrl = baseURL + 'movie/' + item.movie_id + '?api_key=' + apiKey;
+          promises.push(axios.get(myUrl));
+        }
       });
       axios.all(promises).then(function (data) {
-        _this2.movies = data; // results.forEach(function(response) {
-        //     mainObject.push(response.data);
-        //     //console.log(mainObject)
-        // })
-        // that.movies = mainObject
+        _this2.movies = data;
+        console.log(data);
       })["catch"](function (error) {
         console.log("setWatchLaterList had this error" + error);
       });
-      console.log(that.movies);
+      console.log(movies);
       this.isActive = false;
     }
   },
@@ -3370,7 +3368,7 @@ __webpack_require__.r(__webpack_exports__);
       var instance = axios.create();
       delete instance.defaults.headers.common['X-CSRF-TOKEN'];
       delete instance.defaults.headers.common['X-Requested-With'];
-      axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + apiKey + '&query=' + query).then(function (data) {
+      axios.get(baseURL + 'search/movie?api_key=' + apiKey + '&query=' + query).then(function (data) {
         _this.movies = data.data;
         _this.isActive = false;
       })["catch"](function (error) {
@@ -3523,7 +3521,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isActive = true;
-      axios.get('https://api.themoviedb.org/3/movie/' + this.id + '?api_key=' + apiKey).then(function (data) {
+      axios.get(baseURL + 'movie/' + this.id + '?api_key=' + apiKey).then(function (data) {
         _this.movie = data.data;
         _this.isActive = false;
       })["catch"](function (error) {
@@ -40943,7 +40941,8 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("small", [
-          _vm._v("Release Date " + _vm._s(_vm.movie.release_date) + " ")
+          _c("i", { staticClass: "fas fa-calendar-times" }),
+          _vm._v(" " + _vm._s(_vm.movie.release_date) + " ")
         ]),
         _vm._v(" "),
         !_vm.isWatchLater
@@ -56771,6 +56770,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.component('movie-card', _components_m
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.component('my-movies', _components_my_movies__WEBPACK_IMPORTED_MODULE_10__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.component('VueElementLoading', vue_element_loading__WEBPACK_IMPORTED_MODULE_12___default.a);
 window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';
+window.baseURL = 'https://api.themoviedb.org/3/';
 var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
   el: '#app',
   router: _router__WEBPACK_IMPORTED_MODULE_8__["default"]

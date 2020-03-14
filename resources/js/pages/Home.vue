@@ -44,7 +44,7 @@
                     var instance = axios.create();
                     delete instance.defaults.headers.common['X-CSRF-TOKEN'];
                     delete instance.defaults.headers.common['X-Requested-With'];
-                    axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + apiKey + '&query=' + query)
+                    axios.get(baseURL + 'search/movie?api_key=' + apiKey + '&query=' + query)
                         .then((data) => {
                             this.movies = data.data
                             this.isActive = false;

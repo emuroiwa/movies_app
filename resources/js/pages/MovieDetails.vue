@@ -48,7 +48,7 @@
             getMovieDetails() {
                 this.isActive = true;
                 
-                  axios.get('https://api.themoviedb.org/3/movie/'+ this.id +'?api_key=' + apiKey)
+                  axios.get(baseURL + 'movie/'+ this.id +'?api_key=' + apiKey)
                         .then((data) => {
                             this.movie = data.data
                             this.isActive = false

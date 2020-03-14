@@ -29,28 +29,26 @@
             },
             setWatchLaterList(data) {
                 this.isActive = true;
-                // let movies = [];
-
+                let movies = [];
+                
                 var mainObject = [],
                     promises = [];
                 var that = this;
                 data.data.forEach(function(item){
-                var myUrl = 'https://api.themoviedb.org/3/movie/'+ item.movie_id +'?api_key=' + apiKey;
-                promises.push(axios.get(myUrl))
+                    if (item.movie_id) {
+                        var myUrl = baseURL + 'movie/'+ item.movie_id +'?api_key=' + apiKey;
+                        promises.push(axios.get(myUrl))
+                    }
                 });
 
                 axios.all(promises).then((data) => {
                     this.movies = data;
-                    // results.forEach(function(response) {
-                    //     mainObject.push(response.data);
-                    //     //console.log(mainObject)
-                    // })
-                    // that.movies = mainObject
+                    console.log(data)
                 }) 
                 .catch((error) => {
                         console.log("setWatchLaterList had this error" + error)
                     })
-                console.log(that.movies)
+                console.log(movies)
                 this.isActive = false
             }   
         },

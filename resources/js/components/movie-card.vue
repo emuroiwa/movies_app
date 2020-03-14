@@ -25,18 +25,18 @@
         methods: {
             watchLater(id) {
                 // check if user is logged in
-                if (this.$user) {
+                if (this.$auth.check()) {
                    this.saveWatchLater(id)  
                 } else {
                     // tell user to login
-                    window.location = 'login'   
+                    this.$router.push({ name: 'login' })
 
                 }
             },
             saveWatchLater(id) {
-                axios.post('api/watchlater', {
+                axios.post('watchlater', {
                         movie_id: id,
-                        user_id: this.$user.id
+                        user_id: this.$auth.user().id
                        
                     }).then((response) => {
                        

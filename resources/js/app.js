@@ -23,6 +23,7 @@ Vue.use(VueRouter)
 
 // Set Vue authentication
 Vue.use(VueAxios, axios)
+
 axios.defaults.baseURL = `http://localhost:9090/api/v1`
 Vue.use(VueAuth, auth)
 

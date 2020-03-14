@@ -3011,6 +3011,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3025,7 +3028,7 @@ __webpack_require__.r(__webpack_exports__);
         }],
         // LOGGED USER
         user: [{
-          name: 'Dashboard',
+          name: 'My Movies',
           path: 'dashboard'
         }],
         // LOGGED ADMIN
@@ -3074,6 +3077,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isActive = true;
+      var instance = axios.create();
+      delete instance.defaults.headers.common['X-CSRF-TOKEN'];
+      delete instance.defaults.headers.common['X-Requested-With'];
       axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + apiKey).then(function (data) {
         _this.movies = data.data;
         _this.isActive = false;
@@ -3123,17 +3129,19 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     watchLater: function watchLater(id) {
       // check if user is logged in
-      if (this.$user) {
+      if (this.$auth.check()) {
         this.saveWatchLater(id);
       } else {
         // tell user to login
-        window.location = 'login';
+        this.$router.push({
+          name: 'login'
+        });
       }
     },
     saveWatchLater: function saveWatchLater(id) {
-      axios.post('api/watchlater', {
+      axios.post('watchlater', {
         movie_id: id,
-        user_id: this.$user.id
+        user_id: this.$auth.user().id
       }).then(function (response) {})["catch"](function (error) {
         console.log("saveWatchLater had this error" + error);
       });
@@ -3266,6 +3274,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isActive = true;
       var query = this.searchText;
+      var instance = axios.create();
+      delete instance.defaults.headers.common['X-CSRF-TOKEN'];
+      delete instance.defaults.headers.common['X-Requested-With'];
       axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + apiKey + '&query=' + query).then(function (data) {
         _this.movies = data.data;
         _this.isActive = false;
@@ -3499,6 +3510,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -40501,7 +40513,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "navbar navbar-expand-lg navbar-dark bg-dark" },
+    { staticClass: "navbar navbar-expand-lg navbar-dark bg-primary" },
     [
       _c(
         "router-link",
@@ -40534,7 +40546,13 @@ var render = function() {
                           staticClass: "nav-link",
                           attrs: { to: { name: route.path } }
                         },
-                        [_vm._v(_vm._s(route.name))]
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(route.name) +
+                              "\n          "
+                          )
+                        ]
                       )
                     ],
                     1
@@ -40544,7 +40562,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.$auth.check(2)
+          _vm.$auth.check(0)
             ? _c(
                 "ul",
                 { staticClass: "navbar-nav mr-auto" },
@@ -40560,7 +40578,13 @@ var render = function() {
                           staticClass: "nav-link",
                           attrs: { to: { name: route.path } }
                         },
-                        [_vm._v(_vm._s(route.name))]
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(route.name) +
+                              "\n          "
+                          )
+                        ]
                       )
                     ],
                     1
@@ -40586,7 +40610,13 @@ var render = function() {
                           staticClass: "nav-link",
                           attrs: { to: { name: route.path } }
                         },
-                        [_vm._v(_vm._s(route.name))]
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(route.name) +
+                              "\n          "
+                          )
+                        ]
                       )
                     ],
                     1
@@ -40611,13 +40641,11 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Logout")]
+                    [_vm._v("\n          Logout\n        ")]
                   )
                 ])
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._m(1)
+            : _vm._e()
         ]
       )
     ],
@@ -40644,17 +40672,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", { staticClass: "form-inline my-2 my-lg-0" }, [
-      _c("input", {
-        staticClass: "form-control mr-sm-2",
-        attrs: { type: "search", placeholder: "Search", "aria-label": "Search" }
-      })
-    ])
   }
 ]
 render._withStripped = true
@@ -41435,10 +41452,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "card card-default" }, [
-        _c("div", { staticClass: "card-header" }, [_vm._v("Dashboard")]),
+        _c("div", { staticClass: "card-header" }, [_vm._v("My Movies")]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _vm._v("\n            User Dashboard\n        ")
+          _vm._v("\n            User Dashboard\n            \n        ")
         ])
       ])
     ])

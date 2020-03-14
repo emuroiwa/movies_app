@@ -40,6 +40,10 @@
                 searchMovie() {
                     this.isActive = true;
                     let query = this.searchText;
+                    
+                    var instance = axios.create();
+                    delete instance.defaults.headers.common['X-CSRF-TOKEN'];
+                    delete instance.defaults.headers.common['X-Requested-With'];
                     axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + apiKey + '&query=' + query)
                         .then((data) => {
                             this.movies = data.data

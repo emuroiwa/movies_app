@@ -1,5 +1,5 @@
 <template>
-    <div class="card mr-3 mb-2">
+    <div class="card movie-card">
         <router-link :to="{ name: 'movieDetails', params: { id: movie.id } }">
             <img :src="'https://image.tmdb.org/t/p/w500/'+ movie.poster_path"  class="card-img-top" :alt="movie.original_title" >
             <div class="card-img-overlay h-75">
@@ -8,8 +8,10 @@
         </router-link>
         <div class="card-body">
             <h5 class="card-title">{{ movie.original_title }}</h5>
-            <small><i class="fas fa-calendar-times"></i> {{ movie.release_date }} </small>
-
+            <small>
+                <i class="fas fa-calendar-times"></i> {{ movie.release_date }} 
+            </small>
+            <!-- watch later routine -->
             <button v-if="!isWatchLater"  @click="watchLater(movie.id,'add')" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Watch Later
             </button>
@@ -58,6 +60,8 @@
                         });
                 } else {
                     axios.delete('watchlater/'+id).then(()=>{
+                            // remove movie event
+                            Fire.$emit('MovieRemoved');
                             this.checkWatchLaterList(id);
                         }).catch((error)=>{
                             console.log("saveWatchLater had this error" + error)
@@ -66,6 +70,7 @@
             },
             
             checkWatchLaterList(movie_id) {
+                //get watch later from the backend
                 axios.get('watchlater/' + this.$auth.user().id + '/' + movie_id)
                     .then((data) => {
                         if (data.data.length > 0) {

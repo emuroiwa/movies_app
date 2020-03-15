@@ -1,10 +1,13 @@
 <template>
     <div class="container">
         <vue-element-loading :active="isActive" :is-full-screen="true" :size="'80'" :color="'#FF6700'"/>
-        <div class="flex-container">
-            <div v-for="movie in movies.results" :key="movie.id">
+        <div class="flex-container" v-if="movies.length > 0">
+            <div v-for="movie in movies" :key="movie.id">
                 <movie-card :movie="movie"></movie-card>
             </div>
+        </div>
+        <div v-else>
+            <h3> No movies on watch list </h3>
         </div>
     </div>
 </template>
@@ -19,41 +22,41 @@
         },
         methods: {
             getWatchLaterList() {
+                this.isActive = true;
                 axios.get('watchlater/' + this.$auth.user().id)
                     .then((data) => {
-                        this.setWatchLaterList(data)
+                        this.watchLaterList(data)
+                        this.isActive = false;
                     })
                     .catch((error) => {
                         console.log("getWatchLaterList had this error" + error)
                     })
             },
-            setWatchLaterList(data) {
+            watchLaterList(data) {
                 this.isActive = true;
-                let movies = [];
-                
-                var mainObject = [],
-                    promises = [];
-                var that = this;
+                var moviesList = []
                 data.data.forEach(function(item){
                     if (item.movie_id) {
-                        var myUrl = baseURL + 'movie/'+ item.movie_id +'?api_key=' + apiKey;
-                        promises.push(axios.get(myUrl))
+                        axios.get(baseURL + 'movie/'+ item.movie_id +'?api_key=' + apiKey)
+                        .then((data) => {
+                            moviesList.push(data.data)
+                        })
+                        .catch((error) => {
+                            console.log("watchLaterList had this error" + error)
+                        })
                     }
+                 
                 });
-
-                axios.all(promises).then((data) => {
-                    this.movies = data;
-                    console.log(data)
-                }) 
-                .catch((error) => {
-                        console.log("setWatchLaterList had this error" + error)
-                    })
-                console.log(movies)
-                this.isActive = false
-            }   
+                this.movies = moviesList;
+                this.isActive = false;
+            },
         },
         created() {
             this.getWatchLaterList();
+            //event bus checking when movie is removed
+            Fire.$on('MovieRemoved',() => {
+                this.getWatchLaterList();
+            });
         }
 
   }

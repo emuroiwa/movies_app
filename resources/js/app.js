@@ -18,6 +18,11 @@ import VueElementLoading from 'vue-element-loading'
 // Set Vue globally
 window.Vue = Vue
 
+// window variables
+window.Fire =  new Vue();
+window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';
+window.baseURL = 'https://api.themoviedb.org/3/';
+
 // Set Vue router
 Vue.router = router
 Vue.use(VueRouter)
@@ -35,8 +40,7 @@ Vue.component('movie-card', movie_card);
 Vue.component('my-movies', my_movies);
 Vue.component('VueElementLoading', VueElementLoading);
 
-window.apiKey = '531eaffcac14a8c431f91d7a77a345e8';
-window.baseURL = 'https://api.themoviedb.org/3/';
+
 const app = new Vue({
   el: '#app',
   router

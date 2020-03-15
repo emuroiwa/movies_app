@@ -20,7 +20,7 @@
         methods: {
             getPopularMovies() {
                 this.isActive = true;
-                
+                // get movie data from API
                   axios.get(baseURL + 'movie/popular?api_key=' + apiKey)
                         .then((data) => {
                             this.movies = data.data

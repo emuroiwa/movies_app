@@ -7,21 +7,21 @@
                     <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" style="width: 250px; height: 300px;" :src="'https://image.tmdb.org/t/p/w500/'+ movie.poster_path"  :alt="movie.original_title" data-holder-rendered="true">
 
                     <div class="card-body d-flex flex-column align-items-start">
-                    <div class="row w-100"> 
-                        <div class="col-6">
-                            
-                            <span class="badge badge-primary d-inline-block" v-for="genre in movie.genres" :key="genre.id"> {{genre.name}} </span>
-                            <h3 class="mb-0">
-                                <a class="text-dark" :href="'https://www.imdb.com/title/' + movie.imdb_id" target="_blank">{{movie.title}}</a>
-                            </h3>
-                        <div class="mb-1 text-muted">{{movie.runtime}} mins | {{movie.release_date}} |
-                             <p class="d-inline-block" v-for="production_country in movie.production_countries" :key="production_country.id"> {{production_country.name}} </p></div>
+                        <div class="row w-100"> 
+                            <div class="col-6">
+                                
+                                <span class="badge badge-primary d-inline-block" v-for="genre in movie.genres" :key="genre.id"> {{genre.name}} </span>
+                                <h3 class="mb-0">
+                                    <a class="text-dark" :href="'https://www.imdb.com/title/' + movie.imdb_id" target="_blank">{{movie.title}}</a>
+                                </h3>
+                            <div class="mb-1 text-muted">{{movie.runtime}} mins | {{movie.release_date}} |
+                                <p class="d-inline-block" v-for="production_country in movie.production_countries" :key="production_country.id"> {{production_country.name}} </p></div>
+                            </div>
+                            <div class="col-6 d-flex flex-column align-items-end">
+                                <i class="fas fa-star"></i>{{movie.vote_average}} / 10
+                                <small>{{movie.vote_count}}</small>
+                            </div>
                         </div>
-                        <div class="col-6 d-flex flex-column align-items-end">
-                            <i class="fas fa-star"></i>{{movie.vote_average}} / 10
-                            <small>{{movie.vote_count}}</small>
-                        </div>
-                    </div>
                             
                         <p class="card-text mb-auto">
                             {{movie.overview}}
@@ -47,7 +47,7 @@
         methods: {
             getMovieDetails() {
                 this.isActive = true;
-                
+                // get movie data from API
                   axios.get(baseURL + 'movie/'+ this.id +'?api_key=' + apiKey)
                         .then((data) => {
                             this.movie = data.data

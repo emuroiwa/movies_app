@@ -16,7 +16,6 @@ class CreateWatchLatersTable extends Migration
         Schema::create('watch_laters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('movie_id')->nullable();
             $table->timestamps();
         });

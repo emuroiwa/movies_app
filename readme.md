@@ -35,10 +35,10 @@ npm run dev
 ```
 # Configurations
 
-After complete setup process you have to configure you database credentials. First copy `temp.env` as `.env`
+After complete setup process you have to configure you database credentials. First copy `temp.env.txt` as `.env`
 
 ```shell
-cp temp.env .env
+cp temp.env.txt .env
 ```
 
 To generate key please run this:
